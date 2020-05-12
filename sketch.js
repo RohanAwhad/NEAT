@@ -17,6 +17,7 @@ function setup() {
 function draw() {
 	background(0);
 	bird.show();
+	bird.think(pipes[0]);
 	bird.update();
 
 	if ((frameCount - startGameFrame) % 100 === 0) {
@@ -32,7 +33,7 @@ function draw() {
 		}
 
 		if (pipe.hits(bird)) {
-			resetGame();
+			// resetGame();
 		}
 	}
 }

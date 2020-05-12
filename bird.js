@@ -9,6 +9,19 @@ function Bird() {
 	this.lift = 15;
 	this.velocity = 0;
 
+	this.brain = new NeuralNetwork(4, 4, 1);
+
+	this.think = (pipe) => {
+		var inputs = [];
+		inputs[0] = this.y;
+		inputs[1] = pipe.start_pos;
+		inputs[2] = pipe.start_pos + pipe.empty_space;
+		inputs[3] = pipe.x;
+
+		prediction = this.brain.predict(inputs);
+		if (prediction > 0.5) this.up();
+	};
+
 	this.show = () => {
 		fill(255);
 		ellipse(this.x, this.y, this.width, this.height);
