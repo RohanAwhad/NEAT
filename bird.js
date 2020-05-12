@@ -2,13 +2,16 @@ function Bird() {
 	this.y = height / 2;
 	this.x = 40;
 
-	this.gravity = 0.3;
-	this.lift = 10;
+	this.width = 20;
+	this.height = 20;
+
+	this.gravity = 0.5;
+	this.lift = 15;
 	this.velocity = 0;
 
 	this.show = () => {
 		fill(255);
-		ellipse(this.x, this.y, 16, 16);
+		ellipse(this.x, this.y, this.width, this.height);
 	};
 
 	this.up = () => {
@@ -19,7 +22,6 @@ function Bird() {
 		this.velocity += this.gravity;
 		this.velocity *= 0.9;
 		this.y += this.velocity;
-		console.log(this.velocity);
 
 		// Check top - bottom hit
 		if (this.y > height) this.y = height;
