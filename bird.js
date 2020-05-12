@@ -5,18 +5,33 @@ function Bird() {
 	this.width = 20;
 	this.height = 20;
 
-	this.gravity = 0.5;
+	this.gravity = 0.7;
 	this.lift = 15;
 	this.velocity = 0;
 
+	this.score = 0;
+	this.fitness = 0;
+
 	this.brain = new NeuralNetwork(4, 4, 1);
 
-	this.think = (pipe) => {
+	this.think = (pipes) => {
+		// find closest
+		let closest = null;
+		let closestD = Infinity;
+		for (let i = 0; i < pipes.length; i++) {
+			let d = pipes[i].x - this.x;
+			if (d < closestD && d > 0) {
+				closest = pipes[i];
+				closestD = d;
+			}
+		}
+
+		// serialize ip
 		var inputs = [];
-		inputs[0] = this.y;
-		inputs[1] = pipe.start_pos;
-		inputs[2] = pipe.start_pos + pipe.empty_space;
-		inputs[3] = pipe.x;
+		inputs[0] = this.y / height;
+		inputs[1] = closest.start_pos / height;
+		inputs[2] = closest.start_pos + closest.empty_space / height;
+		inputs[3] = closest.x / width;
 
 		prediction = this.brain.predict(inputs);
 		if (prediction > 0.5) this.up();

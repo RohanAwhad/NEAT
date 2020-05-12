@@ -1,24 +1,27 @@
-var bird;
+var POPULATION_SIZE = 10;
+var birds;
 var pipes;
 var startGameFrame;
+var died_birds;
 
 function resetGame() {
-	bird = new Bird();
+	birds = [];
+	died_birds = [];
+	for (let i = 0; i < POPULATION_SIZE; i++) {
+		birds.push(new Bird());
+	}
 	pipes = [ new Pipe() ];
 	startGameFrame = frameCount;
-	console.log(startGameFrame);
 }
 
 function setup() {
 	createCanvas(500, 600);
+	tf.setBackend('cpu');
 	resetGame();
 }
 
 function draw() {
 	background(0);
-	bird.show();
-	bird.think(pipes[0]);
-	bird.update();
 
 	if ((frameCount - startGameFrame) % 100 === 0) {
 		pipes.push(new Pipe());
@@ -32,13 +35,28 @@ function draw() {
 			pipes.splice(i, 1);
 		}
 
-		if (pipe.hits(bird)) {
-			// resetGame();
+		for (let j = birds.length - 1; j > -1; j--) {
+			bird = birds[i];
+			if (pipe.hits(bird)) {
+				birds.splice(i, 1);
+				died_birds.push(bird);
+			}
+		}
+
+		if (birds.length === 0) {
+			newGeneration();
 		}
 	}
+
+	birds.forEach((bird) => {
+		bird.think(pipes);
+		bird.update();
+		bird.show();
+		bird.score++;
+	});
 }
 
-function keyPressed() {
-	if (key === ' ') bird.up();
-	// console.log('Key pressed!!')
-}
+// function keyPressed() {
+// 	if (key === ' ') bird.up();
+// 	// console.log('Key pressed!!')
+// }
