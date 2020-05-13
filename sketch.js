@@ -1,15 +1,11 @@
-var POPULATION_SIZE = 10;
+var POPULATION_SIZE = 4;
 var birds;
 var pipes;
 var startGameFrame;
 var died_birds;
 
 function resetGame() {
-	birds = [];
 	died_birds = [];
-	for (let i = 0; i < POPULATION_SIZE; i++) {
-		birds.push(new Bird());
-	}
 	pipes = [ new Pipe() ];
 	startGameFrame = frameCount;
 }
@@ -17,6 +13,7 @@ function resetGame() {
 function setup() {
 	createCanvas(500, 600);
 	tf.setBackend('cpu');
+	birds = initialPopulation();
 	resetGame();
 }
 
@@ -44,7 +41,8 @@ function draw() {
 		}
 
 		if (birds.length === 0) {
-			newGeneration();
+			birds = newGeneration();
+			resetGame();
 		}
 	}
 
