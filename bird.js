@@ -38,7 +38,8 @@ function Bird() {
 	};
 
 	this.show = () => {
-		fill(255);
+		stroke(255)
+		fill(255, 50);
 		ellipse(this.x, this.y, this.width, this.height);
 	};
 
