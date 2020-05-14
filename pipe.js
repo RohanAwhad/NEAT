@@ -1,6 +1,7 @@
 function Pipe() {
-	this.empty_space = random(80, 200);
-	this.start_pos = random(0 + this.empty_space, height - this.empty_space);
+	// this.empty_space = random(80, 200);
+	this.empty_space = 150;
+	this.start_pos = random(1, height - this.empty_space);
 	this.width = 50;
 	this.x = width;
 

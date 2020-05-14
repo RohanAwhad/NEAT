@@ -4,9 +4,11 @@ class NeuralNetwork {
 	}
 
 	predict(inputs) {
-		var xs = tf.tensor2d([ inputs ]);
-		var predictions = this.model.predict(xs).dataSync();
-		return predictions[0];
+		return tf.tidy(() => {
+			var xs = tf.tensor2d([ inputs ]);
+			var predictions = this.model.predict(xs).dataSync()[0];
+			return predictions;
+		});
 	}
 
 	createModel(input_dims, hidden_layer_dims, output_dims) {
