@@ -8,6 +8,11 @@ var died_birds = [];
 var slider;
 var bestScore = 0;
 
+var backgroundImg;
+var birdImg;
+var pipeTopImg;
+var pipeBottomImg;
+
 function resetGame() {
 	let scores = died_birds.map(bird => {
 		return bird.score
@@ -25,8 +30,15 @@ function resetGame() {
 	startGameFrame = frameCount;
 }
 
+function preload(){
+	backgroundImg = loadImage("images/background.png");
+	birdImg = loadImage("images/fatBird.png");
+	pipeTopImg = loadImage("images/full pipe top.png");
+	pipeBottomImg = loadImage("images/full pipe bottom.png");
+}
+
 function setup() {
-	createCanvas(400, 400);
+	createCanvas(600, 600);
 	slider = createSlider(1, 100, 1)
 	tf.setBackend('cpu');
 	birds = initialPopulation();
@@ -35,7 +47,7 @@ function setup() {
 
 function draw() {
 
-	if ((frameCount - startGameFrame) % 100 === 0) {
+	if ((frameCount - startGameFrame) % 120 === 0) {
 		pipes.push(new Pipe());
 	}
 
@@ -84,7 +96,9 @@ function draw() {
 
 	if (frameCount % slider.value() === 0) {
 		// Drawing part
-		background(0);
+		// background(0);
+		image(backgroundImg, 0, 0, width, height);
+
 		birds.forEach(bird => {
 			bird.show();
 		});

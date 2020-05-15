@@ -1,8 +1,10 @@
 function Pipe() {
-	// this.empty_space = random(80, 200);
-	this.empty_space = 150;
+
+	this.empty_space = random(120, 200);
+	// this.empty_space = 150;
 	this.start_pos = random(1, height - this.empty_space);
-	this.width = 50;
+
+	this.width = 100;
 	this.x = width;
 
 	this.hits = (bird) => {
@@ -24,10 +26,15 @@ function Pipe() {
 	};
 
 	this.show = () => {
-		fill(255);
-		rect(this.x, 0, this.width, this.start_pos);
-		fill(255);
-		rect(this.x, this.start_pos + this.empty_space, this.width, height);
+		// fill(255);
+		// rect(this.x, 0, this.width, this.start_pos);
+
+		image(pipeTopImg, this.x, this.start_pos - 800, this.width);
+
+		// fill(255);
+		// rect(this.x, this.start_pos + this.empty_space, this.width, height);
+		
+		image(pipeBottomImg, this.x, this.start_pos + this.empty_space, this.width);
 	};
 
 	this.update = () => {

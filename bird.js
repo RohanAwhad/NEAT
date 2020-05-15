@@ -1,18 +1,19 @@
 function Bird() {
 	this.y = height / 2;
-	this.x = 40;
+	this.x = 50;
 
-	this.width = 20;
-	this.height = 20;
+	this.scale = 1.5;
+	this.width = 30 * this.scale;
+	this.height = 20 * this.scale;
 
-	this.gravity = 1;
-	this.lift = 10;
+	this.gravity = 2;
+	this.lift = 16;
 	this.velocity = 0;
 
 	this.score = 0;
 	this.fitness = 0;
 
-	this.brain = new NeuralNetwork(5, 6, 1);
+	this.brain = new NeuralNetwork(5, 8, 1);
 
 	this.think = (pipes) => {
 		// find closest
@@ -39,9 +40,17 @@ function Bird() {
 	};
 
 	this.show = () => {
-		stroke(255)
-		fill(255, 50);
-		ellipse(this.x, this.y, this.width, this.height);
+		// stroke(255)
+		// fill(255, 50);
+		// ellipse(this.x, this.y, this.width, this.height);
+
+		push();
+		translate(this.x, this.y)
+		let rotateBy = map(constrain(this.velocity, -30, 30), -30, 30, -2*PI/3, 2*PI/3);
+		rotate(rotateBy);
+		imageMode(CENTER);
+		image(birdImg, 0, 0, this.width, this.height)
+		pop();
 	};
 
 	this.offscreen = () => {

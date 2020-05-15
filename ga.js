@@ -1,5 +1,5 @@
-var mutation_rate = 0.1;
-var crossover_probability = 1;
+var mutation_rate = 0.05;
+var crossover_probability = 0.7;
 var crossover_points_k = 1;
 var incremental_learning = false;
 
