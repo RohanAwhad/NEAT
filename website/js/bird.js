@@ -1,5 +1,5 @@
 function Bird() {
-	this.y = height / 2;
+	this.y = p5SketchObj.height / 2;
 	this.x = 50;
 
 	this.scale = 1.5;
@@ -20,7 +20,7 @@ function Bird() {
 		let closest = null;
 		let closestD = Infinity;
 		for (let i = 0; i < pipes.length; i++) {
-			let d = (pipes[i].width + pipes[i].x) - this.x;
+			let d = pipes[i].width + pipes[i].x - this.x;
 			if (d < closestD && d > 0) {
 				closest = pipes[i];
 				closestD = d;
@@ -29,10 +29,10 @@ function Bird() {
 
 		// serialize ip
 		var inputs = [];
-		inputs[0] = this.y / height;
-		inputs[1] = closest.start_pos / height;
-		inputs[2] = closest.start_pos + closest.empty_space / height;
-		inputs[3] = closest.x / width;
+		inputs[0] = this.y / p5SketchObj.height;
+		inputs[1] = closest.start_pos / p5SketchObj.height;
+		inputs[2] = closest.start_pos + closest.empty_space / p5SketchObj.height;
+		inputs[3] = closest.x / p5SketchObj.width;
 		inputs[4] = this.velocity / 10;
 
 		prediction = this.brain.predict(inputs);
@@ -44,17 +44,23 @@ function Bird() {
 		// fill(255, 50);
 		// ellipse(this.x, this.y, this.width, this.height);
 
-		push();
-		translate(this.x, this.y)
-		let rotateBy = map(constrain(this.velocity, -30, 30), -30, 30, -2*PI/3, 2*PI/3);
-		rotate(rotateBy);
-		imageMode(CENTER);
-		image(birdImg, 0, 0, this.width, this.height)
-		pop();
+		p5SketchObj.push();
+		p5SketchObj.translate(this.x, this.y);
+		let rotateBy = p5SketchObj.map(
+			p5SketchObj.constrain(this.velocity, -30, 30),
+			-30,
+			30,
+			-2 * p5SketchObj.PI / 3,
+			2 * p5SketchObj.PI / 3
+		);
+		p5SketchObj.rotate(rotateBy);
+		p5SketchObj.imageMode(p5SketchObj.CENTER);
+		p5SketchObj.image(birdImg, 0, 0, this.width, this.height);
+		p5SketchObj.pop();
 	};
 
 	this.offscreen = () => {
-		if (this.y <= 0 || this.y >= height){
+		if (this.y <= 0 || this.y >= p5SketchObj.height) {
 			return true;
 		} else {
 			return false;
@@ -72,6 +78,6 @@ function Bird() {
 	};
 
 	this.del = () => {
-		tf.dispose(this.brain.model)
+		tf.dispose(this.brain.model);
 	};
 }

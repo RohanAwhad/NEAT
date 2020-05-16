@@ -14,7 +14,7 @@ function initialPopulation() {
 function newGeneration() {
 	let newPopulation = [];
 	calculateFitness();
-	for (let i = 0; i < POPULATION_SIZE/2; i++) {
+	for (let i = 0; i < POPULATION_SIZE / 2; i++) {
 		let parents = getParents();
 		let children = reproduce(parents);
 		newPopulation = newPopulation.concat(children);
@@ -25,8 +25,8 @@ function newGeneration() {
 function mutate(chromosomes_of_children) {
 	for (let i = 0; i < 2; i++) {
 		for (let j = 0; j < chromosomes_of_children[i].length; j++) {
-			if (random(1) < mutation_rate) {
-				chromosomes_of_children[i][j] += (randomGaussian() * 0.5);
+			if (p5SketchObj.random(1) < mutation_rate) {
+				chromosomes_of_children[i][j] += p5SketchObj.randomGaussian() * 0.5;
 			}
 		}
 	}
@@ -36,26 +36,28 @@ function mutate(chromosomes_of_children) {
 function crossover(chromosomes_of_parents) {
 	let chromosomes_of_children = [];
 
-	if (random(1) < crossover_probability){
+	if (p5SketchObj.random(1) < crossover_probability) {
 		let crossover_points = [];
-		for (let i = 0; i < crossover_points_k; i++){
-			crossover_points.push(floor(random(chromosomes_of_parents[0].length)));
+		for (let i = 0; i < crossover_points_k; i++) {
+			crossover_points.push(p5SketchObj.floor(p5SketchObj.random(chromosomes_of_parents[0].length)));
 		}
-		crossover_points.sort((a, b) => { return a-b })
+		crossover_points.sort((a, b) => {
+			return a - b;
+		});
 		let parent_1 = chromosomes_of_parents[0];
 		let parent_2 = chromosomes_of_parents[1];
-		
+
 		chromosomes_of_children[0] = [];
 		chromosomes_of_children[1] = [];
 
 		crossover_points.forEach((curr_point, index) => {
-			if (index != 0) prev_point = crossover_points[index-1];
+			if (index != 0) prev_point = crossover_points[index - 1];
 			else prev_point = 0;
 
 			chromosomes_of_children[0] = chromosomes_of_children[0].concat(parent_1.slice(prev_point, curr_point));
 			chromosomes_of_children[1] = chromosomes_of_children[1].concat(parent_2.slice(prev_point, curr_point));
 
-			if( JSON.stringify(parent_1) == JSON.stringify(chromosomes_of_parents[0]) ) {
+			if (JSON.stringify(parent_1) == JSON.stringify(chromosomes_of_parents[0])) {
 				parent_1 = chromosomes_of_parents[1];
 				parent_2 = chromosomes_of_parents[0];
 			} else {
@@ -63,12 +65,11 @@ function crossover(chromosomes_of_parents) {
 				parent_2 = chromosomes_of_parents[1];
 			}
 
-			if (index === (crossover_points.length-1)) {
+			if (index === crossover_points.length - 1) {
 				chromosomes_of_children[0] = chromosomes_of_children[0].concat(parent_1.slice(curr_point));
 				chromosomes_of_children[1] = chromosomes_of_children[1].concat(parent_2.slice(curr_point));
 			}
-
-		})
+		});
 	} else {
 		chromosomes_of_children = chromosomes_of_parents.slice();
 	}
@@ -132,7 +133,7 @@ function calculateFitness() {
 function getParents() {
 	let parents = [];
 	for (let i = 0; i < 2; i++) {
-		let r = random(1);
+		let r = p5SketchObj.random(1);
 		let index = 0;
 		while (r > 0) {
 			r -= died_birds[index].fitness;

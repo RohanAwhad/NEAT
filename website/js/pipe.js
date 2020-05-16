@@ -1,11 +1,10 @@
 function Pipe() {
-
-	this.empty_space = random(120, 200);
+	this.empty_space = p5SketchObj.random(120, 200);
 	// this.empty_space = 150;
-	this.start_pos = random(1, height - this.empty_space);
+	this.start_pos = p5SketchObj.random(1, p5SketchObj.height - this.empty_space);
 
 	this.width = 100;
-	this.x = width;
+	this.x = p5SketchObj.width;
 
 	this.hits = (bird) => {
 		var bird_y_range = [ bird.y - bird.height / 2, bird.y + bird.height / 2 ];
@@ -29,12 +28,12 @@ function Pipe() {
 		// fill(255);
 		// rect(this.x, 0, this.width, this.start_pos);
 
-		image(pipeTopImg, this.x, this.start_pos - 800, this.width);
+		p5SketchObj.image(pipeTopImg, this.x, this.start_pos - 800, this.width);
 
 		// fill(255);
 		// rect(this.x, this.start_pos + this.empty_space, this.width, height);
-		
-		image(pipeBottomImg, this.x, this.start_pos + this.empty_space, this.width);
+
+		p5SketchObj.image(pipeBottomImg, this.x, this.start_pos + this.empty_space, this.width);
 	};
 
 	this.update = () => {
