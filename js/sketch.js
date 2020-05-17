@@ -29,10 +29,9 @@ var sketch = (p) => {
 		if (!showBest && gen_highest_score > bestScore) {
 			bestScore = gen_highest_score;
 			let temp = died_birds.find((bird) => (bird.score = bestScore));
-			if (bestBird) bestBird.del();
-			bestBird = new Bird();
+			if (!bestBird) bestBird = new Bird();
 			bestBird.copy(temp.brain);
-			bestBird.brain = temp.brain;
+			// bestBird.brain = temp.brain;
 			console.log(bestScore);
 		}
 		died_birds.forEach((bird) => {
