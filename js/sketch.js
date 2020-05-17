@@ -1,4 +1,4 @@
-var POPULATION_SIZE = 2;
+var POPULATION_SIZE = 250;
 var GEN_LIMIT = 0;
 var generation_counter = 0;
 var birds;
@@ -30,6 +30,7 @@ var sketch = (p) => {
 		pipes = [ new Pipe() ];
 		startGameFrame = p.frameCount;
 	};
+
 	p.preload = () => {
 		backgroundImg = p.loadImage('images/background.png');
 		birdImg = p.loadImage('images/fatBird.png');
@@ -37,10 +38,17 @@ var sketch = (p) => {
 		pipeBottomImg = p.loadImage('images/full pipe bottom.png');
 	};
 
+	p.restartTraining = () => {
+		birds = initialPopulation();
+		p.resetGame();
+		generation_counter = 0;
+		bestScore = 0;
+		died_birds = [];
+	};
+
 	p.setup = () => {
 		let canvas = p.createCanvas(600, 600);
 		canvas.parent('sketch-div');
-		slider = p.createSlider(1, 100, 1);
 		tf.setBackend('cpu');
 		birds = initialPopulation();
 		p.resetGame();
@@ -94,7 +102,7 @@ var sketch = (p) => {
 			bird.score++;
 		});
 
-		if (p.frameCount % slider.value() === 0) {
+		if (p.frameCount % slider === 0) {
 			// Drawing part
 			// background(0);
 			p.image(backgroundImg, 0, 0, p.width, p.height);
