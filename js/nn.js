@@ -5,10 +5,10 @@ class NeuralNetwork {
 
 	copy(model) {
 		const weights = model.getWeights();
-		let weightCopies = [];
-		weights.forEach((weight) => {
-			weightCopies.push(weight.clone());
-		});
+		var weightCopies = [];
+		for (let i = 0; i < weights.length; i++) {
+			weightCopies[i] = weights[i].clone();
+		}
 		this.model.setWeights(weightCopies);
 	}
 

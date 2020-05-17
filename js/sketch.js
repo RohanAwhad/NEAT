@@ -9,6 +9,7 @@ var slider;
 
 var bestScore = 0;
 var bestBird = null;
+var userBird = null;
 
 var backgroundImg;
 var birdImg;
@@ -28,7 +29,7 @@ var sketch = (p) => {
 		let gen_highest_score = Math.max.apply(Math, scores);
 		if (!showBest && gen_highest_score > bestScore) {
 			bestScore = gen_highest_score;
-			let temp = died_birds.find((bird) => (bird.score = bestScore));
+			let temp = died_birds.find((bird) => bird.score === bestScore);
 			if (!bestBird) bestBird = new Bird();
 			bestBird.copy(temp.brain);
 			// bestBird.brain = temp.brain;
@@ -62,8 +63,8 @@ var sketch = (p) => {
 		birds.forEach((bird) => {
 			bird.del();
 		});
-		p.bird = bestBird;
 		birds = [];
+		// bestBird = bestBird;
 		p.resetGame();
 	};
 
@@ -96,12 +97,14 @@ var sketch = (p) => {
 					}
 				}
 			} else {
-				if (pipe.hits(bird)) {
-					if (showBest) {
-						console.log(bird.score);
+				if (showBest) {
+					if (pipe.hits(bestBird)) {
+						console.log(bestBird.score);
 						p.resetGame();
-						bird.reset();
-					} else {
+						bestBird.reset();
+					}
+				} else {
+					if (pipe.hits(userBird)) {
 						gameOver = true;
 						p.noLoop();
 					}
@@ -136,22 +139,22 @@ var sketch = (p) => {
 				bird.score++;
 			});
 		} else if (showBest) {
-			if (bird.offScreen) {
+			if (bestBird.offscreen()) {
 				p.resetGame();
-				console.log(bird.score);
-				bird.reset();
+				console.log(bestBird.score);
+				bestBird.reset();
 			} else {
-				bird.think(pipes);
-				bird.update();
-				bird.score++;
+				bestBird.think(pipes);
+				bestBird.update();
+				bestBird.score++;
 			}
 		} else {
-			if (bird.offScreen) {
+			if (userBird.offscreen()) {
 				gameOver = true;
 				p.noLoop();
 			} else {
-				bird.update();
-				bird.score++;
+				userBird.update();
+				userBird.score++;
 			}
 		}
 
@@ -159,10 +162,15 @@ var sketch = (p) => {
 			// Drawing part
 			// background(0);
 			p.image(backgroundImg, 0, 0, p.width, p.height);
-
-			birds.forEach((bird) => {
-				bird.show();
-			});
+			if (train) {
+				birds.forEach((bird) => {
+					bird.show();
+				});
+			} else if (showBest) {
+				bestBird.show();
+			} else {
+				userBird.show();
+			}
 
 			pipes.forEach((pipe) => {
 				pipe.show();
