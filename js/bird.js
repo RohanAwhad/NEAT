@@ -80,4 +80,16 @@ function Bird() {
 	this.del = () => {
 		tf.dispose(this.brain.model);
 	};
+
+	this.reset = () => {
+		this.y = p5SketchObj.height / 2;
+		this.x = 50;
+
+		this.velocity = 0;
+		this.score = 0;
+	};
+
+	this.copy = (brain) => {
+		this.brain.copy(brain.model);
+	};
 }

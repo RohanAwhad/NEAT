@@ -6,12 +6,19 @@ var pipes;
 var startGameFrame;
 var died_birds = [];
 var slider;
+
 var bestScore = 0;
+var bestBird = null;
 
 var backgroundImg;
 var birdImg;
 var pipeTopImg;
 var pipeBottomImg;
+
+var showBest = false;
+var userPlay = false;
+var gameOver = false;
+var train = true;
 
 var sketch = (p) => {
 	p.resetGame = () => {
@@ -19,8 +26,13 @@ var sketch = (p) => {
 			return bird.score;
 		});
 		let gen_highest_score = Math.max.apply(Math, scores);
-		if (gen_highest_score > bestScore) {
+		if (!showBest && gen_highest_score > bestScore) {
 			bestScore = gen_highest_score;
+			let temp = died_birds.find((bird) => (bird.score = bestScore));
+			if (bestBird) bestBird.del();
+			bestBird = new Bird();
+			bestBird.copy(temp.brain);
+			bestBird.brain = temp.brain;
 			console.log(bestScore);
 		}
 		died_birds.forEach((bird) => {
@@ -44,6 +56,16 @@ var sketch = (p) => {
 		generation_counter = 0;
 		bestScore = 0;
 		died_birds = [];
+		bestBird = null;
+	};
+
+	p.playBest = () => {
+		birds.forEach((bird) => {
+			bird.del();
+		});
+		p.bird = bestBird;
+		birds = [];
+		p.resetGame();
 	};
 
 	p.setup = () => {
@@ -65,42 +87,74 @@ var sketch = (p) => {
 			if (pipe.offScreen()) {
 				pipes.splice(i, 1);
 			}
-
-			for (let j = birds.length - 1; j > -1; j--) {
-				bird = birds[j];
+			if (train) {
+				for (let j = birds.length - 1; j > -1; j--) {
+					bird = birds[j];
+					if (pipe.hits(bird)) {
+						died_birds.push(bird);
+						// bird.del();
+						birds.splice(j, 1)[0];
+					}
+				}
+			} else {
 				if (pipe.hits(bird)) {
-					died_birds.push(bird);
-					// bird.del();
-					birds.splice(j, 1)[0];
+					if (showBest) {
+						console.log(bird.score);
+						p.resetGame();
+						bird.reset();
+					} else {
+						gameOver = true;
+						p.noLoop();
+					}
 				}
 			}
 		}
 
-		birds.forEach((bird, i) => {
-			if (bird.offscreen()) {
-				died_birds.push(bird);
-				// bird.del();
-				birds.splice(i, 1)[0];
-			}
-		});
+		if (train) {
+			birds.forEach((bird, i) => {
+				if (bird.offscreen()) {
+					died_birds.push(bird);
+					// bird.del();
+					birds.splice(i, 1)[0];
+				}
+			});
 
-		if (birds.length === 0) {
-			if (GEN_LIMIT != 0 && generation_counter >= GEN_LIMIT) {
-				p.noLoop();
-				// Display best player and give out message
-			} else {
-				birds = newGeneration();
+			if (birds.length === 0) {
+				if (GEN_LIMIT != 0 && generation_counter >= GEN_LIMIT) {
+					p.noLoop();
+					// Display best player and give out message
+				} else {
+					birds = newGeneration();
+					p.resetGame();
+					console.log('new gen');
+					generation_counter++;
+				}
+			}
+
+			birds.forEach((bird) => {
+				bird.think(pipes);
+				bird.update();
+				bird.score++;
+			});
+		} else if (showBest) {
+			if (bird.offScreen) {
 				p.resetGame();
-				console.log('new gen');
-				generation_counter++;
+				console.log(bird.score);
+				bird.reset();
+			} else {
+				bird.think(pipes);
+				bird.update();
+				bird.score++;
+			}
+		} else {
+			if (bird.offScreen) {
+				gameOver = true;
+				p.noLoop();
+			} else {
+				bird.update();
+				bird.score++;
 			}
 		}
-
-		birds.forEach((bird) => {
-			bird.think(pipes);
-			bird.update();
-			bird.score++;
-		});
 
 		if (p.frameCount % slider === 0) {
 			// Drawing part
@@ -116,9 +170,21 @@ var sketch = (p) => {
 			});
 		}
 	};
+	p.keyPressed = () => {
+		if (p.key === ' ') {
+			if (userPlay) {
+				if (gameOver) {
+					gameOver = false;
+					console.log(bird.score);
+					bird = new Bird();
+					p.loop();
+					p.resetGame();
+				} else {
+					bird.up();
+				}
+			}
+		}
+		// console.log('Key pressed!!')
+	};
 };
-// function keyPressed() {
-// 	if (key === ' ') bird.up();
-// 	// console.log('Key pressed!!')
-// }
 var p5SketchObj = new p5(sketch);

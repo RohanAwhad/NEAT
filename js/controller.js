@@ -11,8 +11,20 @@ function addListeners() {
 		crossover_points_k = $('#crossover_points_k').val();
 		mutation_rate = $('#mutation_rate').val();
 
+		train = true;
+		showBest = false;
+		userPlay = false;
+
 		// function call to sketch obj for restarting training
 		p5SketchObj.restartTraining();
+	});
+
+	$('.best').click(function() {
+		train = false;
+		showBest = true;
+		userPlay = false;
+
+		p5SketchObj.playBest();
 	});
 }
 
