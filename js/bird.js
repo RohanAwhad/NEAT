@@ -6,8 +6,8 @@ function Bird() {
 	this.width = 30 * this.scale;
 	this.height = 20 * this.scale;
 
-	this.gravity = 2;
-	this.lift = 16;
+	this.gravity = 1.5;
+	this.lift = 20;
 	this.velocity = 0;
 
 	this.score = 0;

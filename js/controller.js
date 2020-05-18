@@ -26,6 +26,17 @@ function addListeners() {
 
 		p5SketchObj.playBest();
 	});
+
+	$('.play').click(function() {
+		console.log('button pressed');
+		train = false;
+		showBest = false;
+		userPlay = true;
+
+		$(this).blur();
+
+		p5SketchObj.playUser();
+	});
 }
 
 function setFormValues() {

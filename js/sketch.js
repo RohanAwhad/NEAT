@@ -7,6 +7,7 @@ var startGameFrame;
 var died_birds = [];
 var slider;
 
+var gameScore = 0;
 var bestScore = 0;
 var bestBird = null;
 var userBird = null;
@@ -23,6 +24,7 @@ var train = true;
 
 var sketch = (p) => {
 	p.resetGame = () => {
+		console.log('called sketch reset');
 		let scores = died_birds.map((bird) => {
 			return bird.score;
 		});
@@ -41,6 +43,7 @@ var sketch = (p) => {
 		died_birds = [];
 		pipes = [ new Pipe() ];
 		startGameFrame = p.frameCount;
+		gameScore = 1;
 	};
 
 	p.preload = () => {
@@ -57,6 +60,8 @@ var sketch = (p) => {
 		bestScore = 0;
 		died_birds = [];
 		bestBird = null;
+		p.userGameOver.html('');
+		p.loop();
 	};
 
 	p.playBest = () => {
@@ -66,9 +71,49 @@ var sketch = (p) => {
 		birds = [];
 		// bestBird = bestBird;
 		p.resetGame();
+		p.userGameOver.html('');
+		p.loop();
+	};
+
+	p.playUser = () => {
+		birds.forEach((bird) => {
+			bird.del();
+		});
+		birds = [];
+		if (!userBird) userBird = new Bird();
+		p.resetGame();
 	};
 
 	p.setup = () => {
+		let f = [ 'font-family', "'Share Tech', sans-serif" ];
+		p.scoreElement = p.createDiv('Score = 0');
+		p.scoreElement.position(170, 30);
+		p.scoreElement.id = 'score';
+		p.scoreElement.style('color', 'white');
+		p.scoreElement.style(f[0], f[1]);
+		p.scoreElement.style('font-size', '1.35rem');
+
+		p.generationCounter = p.createDiv('Generation = 0');
+		p.generationCounter.position(350, 30);
+		p.generationCounter.id = 'genCntr';
+		p.generationCounter.style('color', 'white');
+		p.generationCounter.style(f[0], f[1]);
+		p.generationCounter.style('font-size', '1.35rem');
+
+		p.scoreElementTrainBestYet = p.createDiv('');
+		p.scoreElementTrainBestYet.position(560, 30);
+		p.scoreElementTrainBestYet.id = 'bestScore';
+		p.scoreElementTrainBestYet.style('color', 'white');
+		p.scoreElementTrainBestYet.style(f[0], f[1]);
+		p.scoreElementTrainBestYet.style('font-size', '1.35rem');
+
+		p.userGameOver = p.createDiv('');
+		p.userGameOver.position(300, 300);
+		p.userGameOver.id = 'gameOverMsg';
+		p.userGameOver.style('color', 'white');
+		p.userGameOver.style(f[0], f[1]);
+		p.userGameOver.style('font-size', '2rem');
+
 		let canvas = p.createCanvas(600, 600);
 		canvas.parent('sketch-div');
 		tf.setBackend('cpu');
@@ -77,6 +122,11 @@ var sketch = (p) => {
 	};
 
 	p.draw = () => {
+		gameScore++;
+		p.scoreElement.html('Score = ' + gameScore);
+		if (train) p.scoreElementTrainBestYet.html('Highest Score = ' + bestScore);
+		p.generationCounter.html('Generation = ' + generation_counter);
+
 		if ((p.frameCount - startGameFrame) % 120 === 0) {
 			pipes.push(new Pipe());
 		}
@@ -105,6 +155,7 @@ var sketch = (p) => {
 					}
 				} else {
 					if (pipe.hits(userBird)) {
+						p.userGameOver.html('GAME OVER.<br>PRESS SPACEBAR TO PLAY');
 						gameOver = true;
 						p.noLoop();
 					}
@@ -151,6 +202,7 @@ var sketch = (p) => {
 		} else {
 			if (userBird.offscreen()) {
 				gameOver = true;
+				p.userGameOver.html('GAME OVER.<br>PRESS SPACEBAR TO PLAY');
 				p.noLoop();
 			} else {
 				userBird.update();
@@ -182,12 +234,14 @@ var sketch = (p) => {
 			if (userPlay) {
 				if (gameOver) {
 					gameOver = false;
+					p.userGameOver.html('');
 					console.log(bird.score);
-					bird = new Bird();
 					p.loop();
 					p.resetGame();
+					userBird.reset();
 				} else {
-					bird.up();
+					console.log('calling bird.up()');
+					userBird.up();
 				}
 			}
 		}
