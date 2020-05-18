@@ -26,11 +26,21 @@ class NeuralNetwork {
 		model.add(
 			tf.layers.dense({
 				inputShape: [ input_dims ],
-				units: hidden_layer_dims,
+				units: hidden_layer_dims[0],
 				useBias: true,
 				activation: 'relu'
 			})
 		);
+
+		for (let i = 1; i < hidden_layer_dims.length; ++i) {
+			model.add(
+				tf.layers.dense({
+					units: hidden_layer_dims[i],
+					useBias: true,
+					activation: 'relu'
+				})
+			);
+		}
 
 		model.add(
 			tf.layers.dense({

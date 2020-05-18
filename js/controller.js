@@ -11,6 +11,11 @@ function addListeners() {
 		crossover_points_k = $('#crossover_points_k').val();
 		mutation_rate = $('#mutation_rate').val();
 
+		hidden_layers = $('#nn_layers').val();
+		for (let i = 1; i <= hidden_layers; i++) {
+			hidden_dims[i - 1] = Number($('#layer_' + i).val());
+		}
+
 		train = true;
 		showBest = false;
 		userPlay = false;
@@ -41,12 +46,18 @@ function addListeners() {
 
 function setFormValues() {
 	slider = 1;
+
 	$('#pop_size').val(POPULATION_SIZE);
 	$('#gen_limit').val(GEN_LIMIT);
 	$('#crossover_probability').val(crossover_probability);
 	$('#crossover_points_k').val(crossover_points_k);
 	$('#mutation_rate').val(mutation_rate);
 	$('#training_speed').val(slider);
+
+	$('#nn_layers').val(hidden_dims.length);
+	for (let i = 1; i <= hidden_dims.length; i++) {
+		$('#layer_' + i).val(hidden_dims[i - 1]);
+	}
 }
 
 function resetParams() {

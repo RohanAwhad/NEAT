@@ -1,3 +1,7 @@
+var input_dims = 5;
+var output_dims = 1;
+var hidden_dims = [ 2, 2, 2 ];
+
 function Bird() {
 	this.y = p5SketchObj.height / 2;
 	this.x = 50;
@@ -13,7 +17,7 @@ function Bird() {
 	this.score = 0;
 	this.fitness = 0;
 
-	this.brain = new NeuralNetwork(5, 16, 1);
+	this.brain = new NeuralNetwork(input_dims, hidden_dims, output_dims);
 
 	this.think = (pipes) => {
 		// find closest
