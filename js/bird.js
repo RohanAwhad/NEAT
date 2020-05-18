@@ -13,7 +13,7 @@ function Bird() {
 	this.score = 0;
 	this.fitness = 0;
 
-	this.brain = new NeuralNetwork(5, 8, 1);
+	this.brain = new NeuralNetwork(5, 16, 1);
 
 	this.think = (pipes) => {
 		// find closest
