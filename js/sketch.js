@@ -24,7 +24,7 @@ var train = true;
 
 var sketch = (p) => {
 	p.resetGame = () => {
-		console.log('called sketch reset');
+		// console.log('called sketch reset');
 		let scores = died_birds.map((bird) => {
 			return bird.score;
 		});
@@ -35,7 +35,7 @@ var sketch = (p) => {
 			if (!bestBird) bestBird = new Bird();
 			bestBird.copy(temp.brain);
 			// bestBird.brain = temp.brain;
-			console.log(bestScore);
+			// console.log(bestScore);
 		}
 		died_birds.forEach((bird) => {
 			bird.del();
@@ -123,7 +123,7 @@ var sketch = (p) => {
 
 	p.draw = () => {
 		gameScore++;
-		p.scoreElement.html('Score = ' + gameScore);
+		if (slider < 100) p.scoreElement.html('Score = ' + gameScore);
 		if (train) p.scoreElementTrainBestYet.html('Highest Score = ' + bestScore);
 		p.generationCounter.html('Generation = ' + generation_counter);
 
@@ -149,7 +149,7 @@ var sketch = (p) => {
 			} else {
 				if (showBest) {
 					if (pipe.hits(bestBird)) {
-						console.log(bestBird.score);
+						// console.log(bestBird.score);
 						p.resetGame();
 						bestBird.reset();
 					}
@@ -179,7 +179,7 @@ var sketch = (p) => {
 				} else {
 					birds = newGeneration();
 					p.resetGame();
-					console.log('new gen');
+					// console.log('new gen');
 					generation_counter++;
 				}
 			}
@@ -192,7 +192,7 @@ var sketch = (p) => {
 		} else if (showBest) {
 			if (bestBird.offscreen()) {
 				p.resetGame();
-				console.log(bestBird.score);
+				// console.log(bestBird.score);
 				bestBird.reset();
 			} else {
 				bestBird.think(pipes);
@@ -235,12 +235,12 @@ var sketch = (p) => {
 				if (gameOver) {
 					gameOver = false;
 					p.userGameOver.html('');
-					console.log(bird.score);
+					// console.log(bird.score);
 					p.loop();
 					p.resetGame();
 					userBird.reset();
 				} else {
-					console.log('calling bird.up()');
+					// console.log('calling bird.up()');
 					userBird.up();
 				}
 			}

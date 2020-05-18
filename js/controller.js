@@ -33,7 +33,7 @@ function addListeners() {
 	});
 
 	$('.play').click(function() {
-		console.log('button pressed');
+		// console.log('button pressed');
 		train = false;
 		showBest = false;
 		userPlay = true;
