@@ -1,7 +1,7 @@
 function addListeners() {
 	$('#training_speed').on('change', function() {
 		slider = $(this).val();
-		console.log('changed');
+		// console.log('changed');
 	});
 
 	$('.train').click(function() {
