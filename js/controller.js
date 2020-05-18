@@ -1,8 +1,8 @@
 function addListeners() {
-	$('#training_speed').on('change', function() {
-		slider = $(this).val();
-		// console.log('changed');
-	});
+	// $('#training_speed').on('change', function() {
+	//	slider = $(this).val();
+	//	// console.log('changed');
+	//});
 
 	$('.train').click(function() {
 		POPULATION_SIZE = $('#pop_size').val();
@@ -52,7 +52,7 @@ function setFormValues() {
 	$('#crossover_probability').val(crossover_probability);
 	$('#crossover_points_k').val(crossover_points_k);
 	$('#mutation_rate').val(mutation_rate);
-	$('#training_speed').val(slider);
+	//$('#training_speed').val(slider);
 
 	$('#nn_layers').val(hidden_dims.length);
 	for (let i = 1; i <= hidden_dims.length; i++) {
