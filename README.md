@@ -34,7 +34,7 @@ To set up this project, follow these steps:
   python3 -m http.server --port 8000
   ```
 
-4. Open the `http://localhost:8000` file in a web browser to start the simulation.
+4. Open the `http://localhost:8000` url in a web browser to start the simulation.
 
 ## Usage
 
